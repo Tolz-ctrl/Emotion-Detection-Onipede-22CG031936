@@ -1,0 +1,60 @@
+Emotion Detection Web App - Deployment Link
+==========================================
+
+Author: Onipede-22CG031936
+Project: Flask-based Emotion Detection using TensorFlow
+
+DEPLOYMENT INSTRUCTIONS:
+------------------------
+
+1. LOCAL DEPLOYMENT:
+   - Run: python app.py
+   - Access: http://localhost:5000
+   - Or: http://127.0.0.1:5000
+
+2. DEPLOYMENT PLATFORMS:
+
+   A. Render (Recommended):
+      - Create account at https://render.com
+      - Connect GitHub repository
+      - Deploy as Web Service
+      - Link will be: https://your-app-name.onrender.com
+
+   B. Heroku:
+      - Create account at https://heroku.com
+      - Install Heroku CLI
+      - Deploy using: git push heroku main
+      - Link will be: https://your-app-name.herokuapp.com
+
+   C. PythonAnywhere:
+      - Create account at https://www.pythonanywhere.com
+      - Upload files via dashboard
+      - Configure web app
+      - Link will be: https://yourusername.pythonanywhere.com
+
+   D. Google Cloud Platform:
+      - Deploy to App Engine or Cloud Run
+      - Link will be: https://your-project.appspot.com
+
+   E. AWS Elastic Beanstalk:
+      - Deploy Flask app to AWS
+      - Link will be: https://your-app.elasticbeanstalk.com
+
+3. DEPLOYED LINK (Update after deployment):
+   -------------------------------------------
+   Production URL: [PASTE YOUR DEPLOYED LINK HERE]
+   
+   Example: https://emotion-detection-onipede.onrender.com
+
+
+NOTES:
+------
+- Ensure face_emotionModel.h5 is included in deployment
+- Set debug=False in app.py for production
+- Configure environment variables if needed
+- Monitor application logs for errors
+- Test with various image formats after deployment
+
+Last Updated: [DATE]
+Status: [PENDING/DEPLOYED]
+

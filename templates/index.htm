@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection - Onipede 22CG031936</title>
+    <!-- Link to external CSS stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Header -->
+        <header>
+            <h1>🎭 Emotion Detection</h1>
+            <p class="subtitle">Upload an image to detect facial emotions using AI</p>
+        </header>
+
+        <!-- Upload Form Section -->
+        <div class="upload-section">
+            <form action="/predict" method="POST" enctype="multipart/form-data">
+                <div class="file-input-wrapper">
+                    <label for="file-input" class="file-label">
+                        📁 Choose Image File
+                    </label>
+                    <input type="file" 
+                           id="file-input" 
+                           name="file" 
+                           accept="image/*" 
+                           required
+                           onchange="displayFileName(this)">
+                    <span id="file-name" class="file-name">No file chosen</span>
+                </div>
+                
+                <button type="submit" class="upload-btn">
+                    🔍 Detect Emotion
+                </button>
+            </form>
+
+            <!-- Reset Button (shown after prediction) -->
+            {% if emotion %}
+            <a href="/reset" class="reset-btn">
+                🔄 Upload Another Image
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Error Message Display -->
+        {% if error %}
+        <div class="error-message">
+            <p>⚠️ {{ error }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Results Section (shown after prediction) -->
+        {% if emotion and not error %}
+        <div class="results-section">
+            <h2>Detection Results</h2>
+            
+            <!-- Display Uploaded Image -->
+            <div class="image-container">
+                <img src="{{ url_for('static', filename=image_path.replace('static/', '')) }}" 
+                     alt="Uploaded Image" 
+                     class="uploaded-image">
+            </div>
+
+            <!-- Display Predicted Emotion -->
+            <div class="prediction-container">
+                <p class="prediction-label">Detected Emotion:</p>
+                <p class="emotion-result">{{ emotion }}</p>
+                <p class="confidence-score">Confidence: {{ confidence }}%</p>
+                
+                <!-- Emotion Icon/Emoji based on prediction -->
+                <div class="emotion-icon">
+                    {% if emotion == 'Happy' %}
+                        😊
+                    {% elif emotion == 'Sad' %}
+                        😢
+                    {% elif emotion == 'Angry' %}
+                        😠
+                    {% elif emotion == 'Surprise' %}
+                        😲
+                    {% elif emotion == 'Fear' %}
+                        😨
+                    {% elif emotion == 'Disgust' %}
+                        🤢
+                    {% elif emotion == 'Neutral' %}
+                        😐
+                    {% else %}
+                        🎭
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Information Section -->
+        <div class="info-section">
+            <h3>ℹ️ How It Works</h3>
+            <ul>
+                <li>Upload a clear image containing a face</li>
+                <li>The AI model analyzes facial features</li>
+                <li>Detects one of 7 emotions: Happy, Sad, Angry, Surprise, Fear, Disgust, or Neutral</li>
+                <li>Displays the result with confidence score</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Developed by Onipede - 22CG031936</p>
+            <p class="tech-stack">Built with Flask, TensorFlow & OpenCV</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript for file name display -->
+    <script>
+        function displayFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        }
+    </script>
+</body>
+</html>
+

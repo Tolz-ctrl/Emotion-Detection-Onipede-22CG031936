@@ -1,0 +1,25 @@
+# Python Dependencies for Emotion Detection Web App
+# Author: Onipede-22CG031936
+# Note: TensorFlow 2.15.0 is compatible with Python 3.11 (used on Render deployment platform)
+# Local development on Python 3.14 will not support TensorFlow until official support is released
+
+# Flask - Web framework for building the application
+flask==3.0.0
+
+# TensorFlow - Deep learning framework for loading and running the emotion detection model
+# Version 2.15.0 is the latest stable version compatible with Python 3.11
+tensorflow==2.15.0
+
+# OpenCV - Computer vision library for image processing and face detection
+opencv-python>=4.8.0
+
+# NumPy - Numerical computing library for array operations
+# Using version compatible with TensorFlow 2.15.0
+numpy>=1.24.0,<2.0.0
+
+# Werkzeug - WSGI utility library (comes with Flask but specified for security)
+werkzeug==3.0.1
+
+# Pillow - Python Imaging Library for additional image processing capabilities
+Pillow>=10.0.0
+

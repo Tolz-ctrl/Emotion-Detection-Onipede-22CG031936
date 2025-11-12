@@ -1,0 +1,78 @@
+EMOTION DETECTION MODEL PLACEHOLDER
+====================================
+
+This file serves as a placeholder for the actual TensorFlow model file.
+
+REQUIRED FILE: face_emotionModel.h5
+
+INSTRUCTIONS:
+-------------
+1. Train your emotion detection model using TensorFlow/Keras
+2. Save the model as 'face_emotionModel.h5'
+3. Place the .h5 file in this directory (Onipede-22CG031936/)
+4. Delete this placeholder file
+
+MODEL SPECIFICATIONS:
+---------------------
+- Input Shape: (48, 48, 1) - Grayscale images
+- Output Classes: 7 emotions
+  1. Angry
+  2. Disgust
+  3. Fear
+  4. Happy
+  5. Sad
+  6. Surprise
+  7. Neutral
+
+- Architecture: CNN (Convolutional Neural Network)
+- Framework: TensorFlow/Keras
+- File Format: .h5 (HDF5)
+
+TRAINING DATASETS (Suggestions):
+---------------------------------
+- FER-2013 (Facial Expression Recognition)
+- CK+ (Extended Cohn-Kanade)
+- JAFFE (Japanese Female Facial Expression)
+- AffectNet
+
+SAMPLE TRAINING CODE:
+---------------------
+```python
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Build model
+model = keras.Sequential([
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(48, 48, 1)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(128, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(7, activation='softmax')
+])
+
+# Compile
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Train (with your data)
+# model.fit(X_train, y_train, epochs=50, validation_data=(X_val, y_val))
+
+# Save
+model.save('face_emotionModel.h5')
+```
+
+ALTERNATIVE:
+------------
+If you don't have a trained model, you can:
+1. Download a pre-trained model from Kaggle or GitHub
+2. Use transfer learning with existing models
+3. Train your own using the datasets mentioned above
+
+Once you have the model file, the Flask app will automatically load it!
+
