@@ -18,19 +18,33 @@
         <!-- Upload Form Section -->
         <div class="upload-section">
             <form action="/predict" method="POST" enctype="multipart/form-data">
+                <!-- User Name Input Field (Optional) -->
+                <div class="input-group">
+                    <label for="user-name" class="input-label">
+                        👤 Your Name (Optional):
+                    </label>
+                    <input type="text"
+                           id="user-name"
+                           name="user_name"
+                           class="text-input"
+                           placeholder="Enter your name or leave blank for Anonymous"
+                           maxlength="100">
+                </div>
+
+                <!-- File Upload Input -->
                 <div class="file-input-wrapper">
                     <label for="file-input" class="file-label">
                         📁 Choose Image File
                     </label>
-                    <input type="file" 
-                           id="file-input" 
-                           name="file" 
-                           accept="image/*" 
+                    <input type="file"
+                           id="file-input"
+                           name="file"
+                           accept="image/*"
                            required
                            onchange="displayFileName(this)">
                     <span id="file-name" class="file-name">No file chosen</span>
                 </div>
-                
+
                 <button type="submit" class="upload-btn">
                     🔍 Detect Emotion
                 </button>
@@ -55,11 +69,16 @@
         {% if emotion and not error %}
         <div class="results-section">
             <h2>Detection Results</h2>
-            
+
+            <!-- Display User Name if provided -->
+            {% if user_name %}
+            <p class="user-info">👤 User: <strong>{{ user_name }}</strong></p>
+            {% endif %}
+
             <!-- Display Uploaded Image -->
             <div class="image-container">
-                <img src="{{ url_for('static', filename=image_path.replace('static/', '')) }}" 
-                     alt="Uploaded Image" 
+                <img src="{{ url_for('static', filename=image_path.replace('static/', '')) }}"
+                     alt="Uploaded Image"
                      class="uploaded-image">
             </div>
 

@@ -11,6 +11,8 @@ import numpy as np
 import cv2
 import os
 from werkzeug.utils import secure_filename
+import sqlite3
+from datetime import datetime
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -19,6 +21,9 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Database configuration
+DATABASE_PATH = 'users_data.db'
 
 # Create upload folder if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -34,6 +39,77 @@ try:
 except Exception as e:
     print(f"Error loading model: {e}")
     model = None
+
+
+# ============================================================================
+# DATABASE FUNCTIONS - Author: Onipede-22CG031936
+# ============================================================================
+
+def init_database():
+    """
+    Initialize the SQLite database and create the predictions table if it doesn't exist
+    This function is called when the app starts to ensure the database is ready
+    """
+    try:
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+
+        # Create table for storing user predictions
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS predictions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_name TEXT NOT NULL,
+                image_filename TEXT NOT NULL,
+                predicted_emotion TEXT NOT NULL,
+                confidence_score REAL NOT NULL,
+                timestamp DATETIME NOT NULL
+            )
+        ''')
+
+        conn.commit()
+        conn.close()
+        print("Database initialized successfully!")
+
+    except Exception as e:
+        print(f"Error initializing database: {e}")
+
+
+def save_prediction_to_db(user_name, image_filename, emotion, confidence):
+    """
+    Save a prediction result to the database
+
+    Args:
+        user_name: Name of the user (or "Anonymous" if not provided)
+        image_filename: Name of the uploaded image file
+        emotion: Predicted emotion label
+        confidence: Confidence score of the prediction
+
+    Returns:
+        Boolean indicating success or failure
+    """
+    try:
+        conn = sqlite3.connect(DATABASE_PATH)
+        cursor = conn.cursor()
+
+        # Insert prediction record
+        cursor.execute('''
+            INSERT INTO predictions (user_name, image_filename, predicted_emotion, confidence_score, timestamp)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (user_name, image_filename, emotion, confidence, datetime.now()))
+
+        conn.commit()
+        conn.close()
+
+        print(f"✓ Prediction saved to database: {user_name} - {emotion} ({confidence:.2f}%)")
+        return True
+
+    except Exception as e:
+        print(f"Error saving to database: {e}")
+        return False
+
+
+# Initialize database when app starts
+init_database()
 
 
 def allowed_file(filename):
@@ -130,32 +206,44 @@ def index():
 def predict():
     """
     Handle image upload and emotion prediction
+    Also saves the prediction to the database for tracking
     """
     # Check if file was uploaded
     if 'file' not in request.files:
         return render_template('index.htm', error="No file uploaded")
-    
+
     file = request.files['file']
-    
+
     # Check if file was selected
     if file.filename == '':
         return render_template('index.htm', error="No file selected")
-    
+
     # Check if file type is allowed
     if file and allowed_file(file.filename):
+        # Get user name from form (optional field)
+        user_name = request.form.get('user_name', '').strip()
+
+        # If no name provided, use "Anonymous"
+        if not user_name:
+            user_name = "Anonymous"
+
         # Secure the filename and save the file
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
-        
+
         # Predict emotion
         emotion, confidence = predict_emotion(filepath)
-        
+
+        # Save prediction to database
+        save_prediction_to_db(user_name, filename, emotion, confidence)
+
         # Render template with results
-        return render_template('index.htm', 
-                             emotion=emotion, 
+        return render_template('index.htm',
+                             emotion=emotion,
                              confidence=round(confidence, 2),
-                             image_path=filepath)
+                             image_path=filepath,
+                             user_name=user_name)
     else:
         return render_template('index.htm', error="Invalid file type. Please upload an image (PNG, JPG, JPEG, GIF)")
 

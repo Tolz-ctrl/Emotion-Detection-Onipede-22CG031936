@@ -75,6 +75,42 @@ header h1 {
     gap: 20px;
 }
 
+/* Input Group Styling (for user name field) */
+.input-group {
+    width: 100%;
+    max-width: 500px;
+    text-align: left;
+}
+
+.input-label {
+    display: block;
+    font-size: 1em;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.text-input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1em;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.text-input::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
 /* File Input Styling */
 .file-input-wrapper {
     display: flex;
@@ -195,6 +231,22 @@ header h1 {
     color: #667eea;
     margin-bottom: 25px;
     font-size: 1.8em;
+}
+
+/* User Info Display */
+.user-info {
+    text-align: center;
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+}
+
+.user-info strong {
+    color: #667eea;
+    font-weight: 700;
 }
 
 /* Image Container */
