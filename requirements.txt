@@ -8,7 +8,7 @@ flask==3.0.0
 
 # TensorFlow - Deep learning framework for loading and running the emotion detection model
 # Version 2.15.0 is the latest stable version compatible with Python 3.11
-tensorflow==2.15.0
+tensorflow==2.20.0
 
 # OpenCV - Computer vision library for image processing and face detection
 opencv-python>=4.8.0
