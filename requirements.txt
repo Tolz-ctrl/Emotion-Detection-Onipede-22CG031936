@@ -23,3 +23,5 @@ werkzeug==3.0.1
 # Pillow - Python Imaging Library for additional image processing capabilities
 Pillow>=10.0.0
 
+# Gunicorn - Production WSGI server for deploying Flask applications
+gunicorn>=21.2.0
